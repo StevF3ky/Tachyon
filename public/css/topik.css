@@ -1,0 +1,218 @@
+/* =========================================
+   GABUNGAN STYLE: CREATE TOPIC & GUEST STATE
+   ========================================= */
+
+/* --- 1. SETUP VARIABEL & RESET --- */
+:root {
+    --bg-color: #020617;
+    --card-bg: rgba(15, 23, 42, 0.7);
+    --sidebar-bg: rgba(2, 6, 23, 0.95);
+    --text-main: #e2e8f0;
+    --text-muted: #64748b;
+    --accent-cyan: #06b6d4;
+    --accent-glow: rgba(6, 182, 212, 0.5);
+    --border-color: #1e293b;
+    --header-height: 70px;
+    --sidebar-width: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 25%);
+    display: flex;
+    overflow-x: hidden;
+}
+
+/* --- 2. SIDEBAR NAVIGATION --- */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    left: 0; top: 0;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 24px;
+    z-index: 50;
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.logo-area { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+.logo-box {
+    width: 40px; height: 40px; background: var(--accent-cyan);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 15px var(--accent-glow); color: white; font-size: 24px;
+}
+.brand-text { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: white; text-transform: uppercase; }
+
+.nav-menu { display: flex; flex-direction: column; gap: 8px; }
+.nav-item {
+    display: flex; align-items: center; gap: 16px; padding: 14px 16px;
+    border-radius: 12px; color: var(--text-muted); text-decoration: none;
+    transition: all 0.2s ease; font-weight: 500;
+}
+.nav-item:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-main); }
+.nav-item.active { background: linear-gradient(90deg, rgba(6, 182, 212, 0.15), transparent); color: var(--accent-cyan); border-left: 3px solid var(--accent-cyan); }
+.nav-item ion-icon { font-size: 20px; }
+
+/* --- SIDEBAR STATE 1: SUDAH LOGIN (USER PROFILE) --- */
+.user-profile {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    padding: 16px; background: rgba(15, 23, 42, 0.5);
+    border-radius: 16px; display: flex; align-items: center; gap: 12px;
+    border: 1px solid var(--border-color);
+}
+.avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; color: white; font-size: 14px;
+}
+
+/* --- SIDEBAR STATE 2: BELUM LOGIN (GUEST BUTTON) --- */
+.login-btn-sidebar {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    padding: 14px; background: linear-gradient(135deg, var(--accent-cyan), #2563eb);
+    color: white; border-radius: 12px; text-align: center; font-weight: 600;
+    text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3); transition: all 0.2s;
+}
+.login-btn-sidebar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); }
+
+/* --- 3. MAIN CONTENT & HEADER --- */
+.main-content {
+    flex: 1; margin-left: var(--sidebar-width);
+    padding: 0 40px 40px 40px; width: 100%; transition: margin 0.3s;
+}
+
+header {
+    height: var(--header-height); display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(12px);
+    z-index: 40; border-bottom: 1px solid var(--border-color);
+    margin: 0 -40px 30px -40px; padding: 0 40px; position: relative;
+}
+
+.search-bar { position: absolute; left: 50%; transform: translateX(-50%); width: 400px; z-index: 10; }
+.search-bar input {
+    width: 100%; padding: 10px 16px 10px 40px; background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color); border-radius: 50px; color: white; outline: none; transition: all 0.3s;
+}
+.search-bar input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1); }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+.left-controls, .header-actions { display: flex; align-items: center; gap: 20px; z-index: 20; }
+.header-actions { margin-left: auto; }
+
+.btn-write {
+    background: linear-gradient(135deg, #0891b2, #2563eb); color: white; border: none; padding: 10px 20px;
+    border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px;
+}
+
+/* --- 4. GUEST STATE (LOCKED CONTENT) --- */
+.guest-state {
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeIn 0.5s ease-out;
+}
+.lock-icon-wrapper {
+    width: 80px; height: 80px; background: rgba(30, 41, 59, 0.5);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px; border: 1px solid var(--border-color);
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+.btn-login-content {
+    background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan);
+    padding: 12px 30px; border-radius: 50px; font-weight: 600; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; margin-top: 20px;
+}
+.btn-login-content:hover { background: rgba(6, 182, 212, 0.1); box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- 5. CREATE TOPIC FORM STYLES --- */
+.create-container { max-width: 800px; margin: 0 auto; }
+
+.section-header { margin-bottom: 24px; }
+.section-title { font-size: 24px; font-weight: 700; color: white; margin-bottom: 4px; }
+.section-desc { color: var(--text-muted); font-size: 14px; }
+
+.form-card {
+    background: var(--card-bg); border: 1px solid var(--border-color);
+    border-radius: 24px; padding: 32px;
+}
+
+.form-group { margin-bottom: 24px; flex: 1; }
+
+label { display: block; font-size: 14px; font-weight: 600; color: white; margin-bottom: 10px; }
+.label-desc { font-weight: 400; color: var(--text-muted); font-size: 12px; margin-left: 8px; }
+
+input[type="text"], textarea {
+    width: 100%; padding: 14px 16px; background: rgba(2, 6, 23, 0.5);
+    border: 1px solid var(--border-color); border-radius: 12px;
+    color: white; font-size: 15px; outline: none; transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+input:focus, textarea:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+
+textarea { resize: vertical; min-height: 200px; line-height: 1.6; }
+
+/* Toolbar Simple for Forum */
+.editor-toolbar {
+    display: flex; gap: 4px; padding: 8px 12px; background: rgba(2, 6, 23, 0.3);
+    border: 1px solid var(--border-color); border-bottom: none;
+    border-top-left-radius: 12px; border-top-right-radius: 12px; justify-content: space-between;
+}
+.toolbar-group { display: flex; gap: 4px; }
+.toolbar-btn {
+    background: none; border: none; color: var(--text-muted); padding: 6px;
+    border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 16px;
+}
+.toolbar-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+
+.input-with-toolbar textarea { border-top-left-radius: 0; border-top-right-radius: 0; }
+
+/* Compact Attachment Bar */
+.attachment-bar {
+    display: flex; gap: 16px; margin-top: 12px;
+}
+.btn-attach {
+    display: flex; align-items: center; gap: 8px; background: rgba(2, 6, 23, 0.5);
+    border: 1px dashed var(--border-color); padding: 10px 16px; border-radius: 8px;
+    color: var(--text-muted); font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-attach:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+/* Form Actions */
+.form-actions {
+    display: flex; justify-content: flex-end; gap: 16px; margin-top: 32px; padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+}
+.btn-cancel {
+    background: transparent; color: var(--text-muted); border: 1px solid transparent;
+    padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; text-decoration: none;
+}
+.btn-cancel:hover { color: white; background: rgba(255,255,255,0.05); }
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--accent-cyan), #2563eb);
+    color: white; border: none; padding: 12px 32px; border-radius: 50px;
+    font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+    transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); }
+
+/* --- 6. MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main-content { margin-left: 0; padding: 0 20px; }
+    .search-bar { display: none; }
+}
