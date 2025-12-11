@@ -77,5 +77,37 @@ class ThreadController extends Controller
         return redirect()->route('home')->with('success', 'Artikel berhasil diterbitkan!');
     }
 
-    
+    // --- TAMBAHAN BARU ---
+
+    // 4. MENGHAPUS POST (Delete)
+    public function destroy(Thread $thread)
+    {
+        // Pastikan hanya pemilik thread yang bisa menghapus
+        if (Auth::id() !== $thread->user_id) {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus postingan ini.');
+        }
+
+        // Hapus gambar jika ada
+        if ($thread->image) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($thread->image);
+        }
+
+        $thread->delete();
+
+        // Redirect ke halaman yang sesuai
+        if ($thread->type == 'article') {
+            return redirect()->route('home')->with('success', 'Artikel berhasil dihapus.');
+        } else {
+            return redirect()->route('forum')->with('success', 'Topik diskusi berhasil dihapus.');
+        }
+    }
+
+    // 5. LIKE / UNLIKE (Toggle)
+    public function toggleLike(Thread $thread)
+    {
+        // Fitur ini otomatis: Kalau belum like -> jadi like. Kalau sudah like -> jadi unlike.
+        $thread->likes()->toggle(Auth::id());
+
+        return back();
+    }
 }

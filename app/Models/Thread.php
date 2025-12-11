@@ -27,6 +27,30 @@ class Thread extends Model
     public function comments()
     {
         // Setiap Thread memiliki banyak Comment/Reply
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->latest();
+    }
+    // Relasi ke User yang me-like thread ini
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes', 'thread_id', 'user_id');
+    }
+
+    // Cek apakah user yang sedang login sudah like
+    public function isLikedBy($user)
+    {
+        if (!$user) return false;
+        return $this->likes->contains('id', $user->id);
+    }
+
+    // Relasi Votes (Polymorphic) menggantikan likes() yang lama
+    public function votes()
+    {
+        return $this->morphMany(Vote::class, 'votable');
+    }
+
+    // Helper hitung skor (Upvote - Downvote)
+    public function getScoreAttribute()
+    {
+        return $this->votes->sum('value'); // Menjumlahkan semua +1 dan -1
     }
 }

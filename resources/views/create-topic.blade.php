@@ -52,7 +52,7 @@
         <div class="create-container">
             <h2 class="page-title">Mulai Diskusi</h2>
 
-            <form action="{{ route('forum.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('thread.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="type" value="topic">
                 

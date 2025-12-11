@@ -191,12 +191,34 @@
                             </div>
                             
                             <div class="card-actions">
-                                <div style="display: flex; gap: 20px;">
-                                    <button class="action-btn"><ion-icon name="heart-outline"></ion-icon> 0</button>
-                                    <button class="action-btn"><ion-icon name="chatbubble-outline"></ion-icon> 0</button>
-                                </div>
-                                <span class="tag-pill">{{ ucfirst($thread->category_id) }}</span>
-                            </div>
+    <div style="display: flex; gap: 20px;">
+        
+        <form action="{{ route('vote') }}" method="POST" style="display:inline;">
+            @csrf
+            <input type="hidden" name="votable_id" value="{{ $thread->id }}">
+            <input type="hidden" name="votable_type" value="thread">
+            <input type="hidden" name="value" value="1"> {{-- 1 artinya Like/Upvote --}}
+
+            @php
+                // Cek apakah user sudah melike/upvote thread ini
+                $userVote = Auth::check() ? $thread->votes->where('user_id', Auth::id())->first() : null;
+                $isLiked = $userVote && $userVote->value == 1;
+            @endphp
+
+            <button type="submit" class="action-btn" style="{{ $isLiked ? 'color: #f43f5e;' : '' }}">
+                {{-- Tampilan tetap Hati (Heart) agar estetik di Feed --}}
+                <ion-icon name="{{ $isLiked ? 'heart' : 'heart-outline' }}"></ion-icon> 
+                {{ $thread->score }} {{-- Menggunakan accessor getScoreAttribute --}}
+            </button>
+        </form>
+
+        {{-- Tombol Komentar (Tetap) --}}
+        <a href="{{ route('thread.show', $thread->id) }}" class="action-btn" style="text-decoration:none;">
+            <ion-icon name="chatbubble-outline"></ion-icon> {{ $thread->comments->count() }}
+        </a>
+    </div>
+    <span class="tag-pill">{{ ucfirst($thread->category_id) }}</span>
+</div>
                         </article>
                     </div>
                 @endforeach
